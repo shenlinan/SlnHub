@@ -42,8 +42,10 @@ public class ReadExcelAction extends ActionSupport {
 				}
 				list.add(strs);
 			}
+			//转成json格式
 			ListToJson ltj = new ListToJson();
 			String exceljson = ltj.listToJson(list);
+			//将转成json格式的字符串写入json文件中
 			ToText tt=new ToText();
 			tt.toText(exceljson);
 		} catch (BiffException e) {
