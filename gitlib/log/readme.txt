@@ -1,1 +1,1 @@
-用于记录日志的简单代码。
+use to record log.
