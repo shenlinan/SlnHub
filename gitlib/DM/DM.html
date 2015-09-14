@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>弹幕</title>
+<style type="text/css">
+	body{background:rgb(95,102,126);color:white;font-family:"楷体";}
+	.box{width:1024px;height:800px;text-align:center;margin:0 auto;position:relative;}
+	/*四个像素分别代表 距离左边，上面的像素，阴影模糊度，颜色*/
+	h3{text-shadow:2px 5px 5px #000;}
+	/*弹幕层start*/
+	.dm{width:1024px;position:absolute;height:504px;background:rgba(249, 249, 252, 0);top:59px;left:0;z-index:2;}
+	.start_dm{display:block;width:25px;height:25px;font-size:8px;background:rgb(50,70,94);color:#fff;line-height:25px;text-decoration:none;border-radius:20px;position:absolute;top:509px;right:10px;border:1px solid #fff;cursor:pointer;z-index:4;}
+	.start_dm:hover{background:rgb(28,34,40);}
+	.close_dm{display:block;width:25px;height:25px;font-size:8px;background:rgb(50,70,94);color:#fff;line-height:25px;text-decoration:none;border-radius:20px;position:absolute;top:450px;right:10px;border:1px solid #fff;cursor:pointer;z-index:4;}
+	.close_dm:hover{background:rgb(28,34,40);}
+	.send{width:100%;height:76px;position:absolute;button:0;left:0;}
+	.input_text{width:84%;height:25px;box-shadow:2px 5px 5px #000;font-size:14px;font-family:"楷体";float:left;}
+	.btn{display:block;width:15%;height:30px;border:1px solid #000;line-height:25px;text-decoration:none;float:left;box-shadow:2px 5px 5px #000;background:gray;color:#fff;}
+	.btn:hover{background:#000;}
+	.dm_show div{position:absolute;top:76px;right:0;font-size:22px;}
+	/*弹幕层end*/
+</style>
+</head>
+
+<body>
+	<!--弹幕视频层start-->
+	<div class= "box" > 
+	<h3>Perfect Is Shit !</h3>
+	<embed src="http://player.youku.com/player.php/sid/XMTYwNzQzMDY0/v.swf" 
+	allowFullScreen="true" quality="high" width="1024" height="550" align="middle" 
+	allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+	<a href="javasctipt:void(0)" class="start_dm">弹幕</a>
+		<!--弹幕层start-->
+		<div class="dm">
+		<a href="javasctipt:void(0)" class="close_dm">X</a>
+			<!--内容层start-->
+				<div class="dm_show">
+				</div>
+			<!--内容层start-->
+		</div>
+	<!--弹幕层end-->
+		<!--发送区域start-->
+		<div class="send">
+			<input type="text" class="input_text" placeholder=" 请输入发表的内容......"/> <a class="btn" href="javasctipt:void(0)">发表评论</a>
+		</div>
+		<!--发送区域end-->
+	</div>
+	<!--弹幕视频层end-->
+	<!--弹幕脚本代码start-->
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+		//toggle 当对象隐藏的时候显示，当显示的时候隐藏
+		$(".start_dm").toggle("slow");
+		$(function(){
+		init_screen();
+			//当点击弹幕这个按钮时，隐藏
+			$(".start_dm").click(function(){
+				$(".start_dm,.dm,.close_dm").toggle("slow");
+			});
+			//当点击X这个按钮时，隐藏
+			$(".close_dm").click(function(){
+				$(".start_dm,.dm,.close_dm").toggle("slow");
+			});
+			$(".btn").click(function(){
+				var content = $(".input_text").val();
+				var _label = $("<div>"+content+"</div>");
+				$(".dm_show").append(_label);
+				$(".input_text").val("");
+				init_screen();
+			});
+			//初始化屏幕
+			function init_screen(){
+				var _top = 0;
+				$(".dm_show").find("div").show().each(function(){
+					//每次执行一个div都会执行这个function
+					
+					//弹幕的最大宽度-div本身的宽度，可以算出left值
+					var _left = $(".dm").width() - $(this).width(); 
+					//弹幕的高度
+					var _height = $(".dm").height();
+					_top = _top + 76;
+					if(_top >= _height -50){
+					_top = 0;
+					}
+					//设置文字初始化的位置
+					$(this).css({left:_left,top:_top,color:"white"});
+					//移动
+					$(this).animate({left:"-"+_left+"px"},4000,function(){
+						$(this).remove();
+					});
+				});
+			}
+		});
+		//获取随即颜色
+		function getRandomColor(){
+			var str = Math.ceil(Math.random()*16777215).toString(16);
+			while(str.length < 6){
+				str = '0' + str;
+			}
+			return "#" + str;
+		}	
+	</script>
+	<!--弹幕脚本代码end-->
+	</body>
+</html>
